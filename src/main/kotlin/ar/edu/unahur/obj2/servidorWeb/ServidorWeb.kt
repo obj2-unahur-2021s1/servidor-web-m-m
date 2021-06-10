@@ -10,5 +10,23 @@ enum class CodigoHttp(val codigo: Int) {
   NOT_FOUND(404),
 }
 
-class Pedido(val ip: String, val url: String, val fechaHora: LocalDateTime)
-class Respuesta(val codigo: CodigoHttp, val body: String, val tiempo: Int, val pedido: Pedido)
+class Pedido(val ip: String, val url: String, val fechaHora: LocalDateTime){
+  fun protocoloUrl() = null
+  fun rutaUrl() = null
+  fun extension() = null
+}
+class Respuesta(val codigo: CodigoHttp, val body: String, val tiempo: Int, val pedido: Pedido){}
+
+class ServidorWeb(){
+  val cantidadDePedidos = mutableListOf<Pedido>()
+  var pedidosExistosos = 0
+  var pedidoActual: Pedido? = null
+
+  fun recibirPedido(pedido: Pedido){
+    pedidoActual = pedido
+  }
+
+  fun enviarRespuesta(){}
+
+  fun fueUnPedidoExitoso(){pedidosExistosos+=1}
+}
