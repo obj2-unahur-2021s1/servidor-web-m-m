@@ -11,9 +11,11 @@ enum class CodigoHttp(val codigo: Int) {
 }
 
 class Pedido(val ip: String, val url: String, val fechaHora: LocalDateTime){
-  fun protocoloUrl() = null
-  fun rutaUrl() = null
-  fun extension() = null
+  fun protocoloUrl() = url.split(":").first()
+
+  fun rutaUrl() = url.split("ar").last()
+
+  fun extensionUrl() = url.split(".").last()
 }
 class Respuesta(val codigo: CodigoHttp, val body: String, val tiempo: Int, val pedido: Pedido){}
 
