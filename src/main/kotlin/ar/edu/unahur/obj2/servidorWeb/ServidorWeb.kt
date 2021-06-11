@@ -44,9 +44,7 @@ class ServidorWeb() {
     // ACÁ VAN LOS MÓDULOS
     // ACÁ VAN LOS ANALIZADORES
 
-
-    // val respuestaServidorWeb = generarRespuesta(validarProtocoloPedido(), cuerpoRespuesta, )
-
+    // esto es en primera instancia.... después se modifica con la inclusión de los módulos
     val cuerpoRespuesta = ""
 
     return Respuesta(validarProtocoloPedido(protocoloPedido), cuerpoRespuesta, tiempoRespuesta, pedido)
