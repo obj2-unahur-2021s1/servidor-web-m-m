@@ -7,9 +7,10 @@ import java.time.LocalDateTime
 
 class ServidorWebTest : DescribeSpec({
 
+  val pedido = Pedido("194.168.2.0","http://pepito.com.ar/documentos/doc1.html",LocalDateTime.now())
+
   describe("pedido"){
 
-    val pedido = Pedido("194.168.2.0","http://pepito.com.ar/documentos/doc1.html",LocalDateTime.now())
     it("el protocolo es http"){
       pedido.protocoloUrl().shouldBe("http")
     }
@@ -21,6 +22,7 @@ class ServidorWebTest : DescribeSpec({
       pedido.extensionUrl().shouldBe("html")
     }
   }
+
   describe("Un servidor web") {
     val server = ServidorWeb()
 
@@ -38,6 +40,11 @@ class ServidorWebTest : DescribeSpec({
         server.recibirPedido(pedidoConError)
         val cod = server.enviarRespuesta()?.codigo?.codigo
         cod.shouldNotBe(200)
+      }
+
+      it("valida el protocolo recibido como protocolo http") {
+        val protocoloPedido = pedido.protocoloUrl()
+        server.validarProtocoloPedido(protocoloPedido).shouldBe(CodigoHttp.OK)
       }
 
       it("el tiempo que tarda es de 10 milisegundos"){
