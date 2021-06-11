@@ -39,7 +39,7 @@ class ServidorWeb() {
   fun procesarPedido(pedido: Pedido) : Respuesta {
     val protocoloPedido = pedido.protocoloUrl()
     val rutaPedido = pedido.rutaUrl()
-    val extensioPedido = pedido.extensionUrl()
+    val extensionPedido = pedido.extensionUrl()
 
     // ACÁ VAN LOS MÓDULOS
     // ACÁ VAN LOS ANALIZADORES
