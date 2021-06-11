@@ -7,19 +7,19 @@ import java.time.LocalDateTime
 
 class ServidorWebTest : DescribeSpec({
 
-  val pedido = Pedido("194.168.2.0","http://pepito.com.ar/documentos/doc1.html",LocalDateTime.now())
+  val pedido1 = Pedido("194.168.2.0","http://pepito.com.ar/documentos/doc1.html",LocalDateTime.now())
 
   describe("pedido"){
 
     it("el protocolo es http"){
-      pedido.protocoloUrl().shouldBe("http")
+      pedido1.protocoloUrl().shouldBe("http")
     }
     it("la ruta es /documentos/doc1.html "){
-      pedido.rutaUrl().shouldBe("/documentos/doc1.html")
+      pedido1.rutaUrl().shouldBe("/documentos/doc1.html")
     }
 
     it("la extension es html"){
-      pedido.extensionUrl().shouldBe("html")
+      pedido1.extensionUrl().shouldBe("html")
     }
   }
 
@@ -43,7 +43,7 @@ class ServidorWebTest : DescribeSpec({
       }
 
       it("valida el protocolo recibido como protocolo http") {
-        val protocoloPedido = pedido.protocoloUrl()
+        val protocoloPedido = pedido1.protocoloUrl()
         server.validarProtocoloPedido(protocoloPedido).shouldBe(CodigoHttp.OK)
       }
 
@@ -62,6 +62,15 @@ class ServidorWebTest : DescribeSpec({
         server.recibirPedido(pedidoConError)
         val respuesta = server.enviarRespuesta()
         respuesta?.tiempo.shouldNotBe(15)
+      }
+    }
+    describe("respuesta de pedido http") {
+      it("obtiene una respuesta al pedido") {
+        val respuesta = server.procesarPedido(pedido1)
+        respuesta.codigo.shouldBe(CodigoHttp.OK)
+        respuesta.body.shouldBe("")
+        respuesta.tiempo.shouldBe(10)
+        respuesta.pedido.shouldBe(pedido1)
       }
     }
   }
