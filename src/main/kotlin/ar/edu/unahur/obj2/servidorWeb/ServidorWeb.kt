@@ -19,22 +19,17 @@ class Pedido(val ip: String, val url: String, val fechaHora: LocalDateTime) {
   fun extensionUrl() = url.split(".").last()
 }
 
-class Respuesta(val codigo: CodigoHttp, val body: String, val tiempo: Int, val pedido: Pedido){}
+class Respuesta(val codigo: CodigoHttp, val body: String, val tiempo: Int, val pedido: Pedido){
+  fun esExitosa() = codigo == CodigoHttp.OK
+}
 
 class ServidorWeb() {
-  val cantidadDePedidos = mutableListOf<Pedido>()
-  var pedidosExistosos = 0
+  val respuestasRealizadas = mutableListOf<Respuesta>()
   //en teoria el lateinit evita q se envie un null
   lateinit var pedidoActual: Pedido
 
   // tiempo de respuesta preestablecido por el enunciado
   val tiempoRespuesta = 10
-
-  //creo que recibir y enviar deberian estar en una misma funcion
-
-  fun recibirPedido(pedido: Pedido) {
-    pedidoActual = pedido
-  }
 
   fun procesarPedido(pedido: Pedido) : Respuesta {
     val protocoloPedido = pedido.protocoloUrl()
@@ -46,8 +41,10 @@ class ServidorWeb() {
 
     // esto es en primera instancia.... después se modifica con la inclusión de los módulos
     val cuerpoRespuesta = ""
+    val respuesta = Respuesta(validarProtocoloPedido(protocoloPedido), cuerpoRespuesta, tiempoRespuesta, pedido)
+    respuestasRealizadas.add(respuesta)
 
-    return Respuesta(validarProtocoloPedido(protocoloPedido), cuerpoRespuesta, tiempoRespuesta, pedido)
+    return respuesta
   }
 
   fun validarProtocoloPedido(protocolo: String) = if (protocolo == "http") CodigoHttp.OK else CodigoHttp.NOT_IMPLEMENTED
@@ -57,8 +54,16 @@ class ServidorWeb() {
     // retornar tiempo actual - tiempo del pedido
   }
 
+  //creo que recibir y enviar deberian estar en una misma funcion
+
+  fun recibirPedido(pedido: Pedido) {
+    pedidoActual = pedido
+  }
+
   fun enviarRespuesta(): Respuesta? {
-    var respuesta: Respuesta? = null
+    val protocoloPedido = pedidoActual.protocoloUrl()
+    //var respuesta: Respuesta? = null
+    /*
     if (!pedidoActual.protocoloUrl().equals("http")) {
       //solucion parcial para los 10 milisegundos
       val tiempo1 = LocalDateTime.now()
@@ -66,9 +71,23 @@ class ServidorWeb() {
       val nano = tiempo2.nano - tiempo1.nano
       //no se si se devuelve asi un enun
       respuesta = Respuesta(CodigoHttp.NOT_IMPLEMENTED, "todavia no funciona", nano, pedidoActual)
+    }else{
+      val tiempo1 = LocalDateTime.now()
+      val tiempo2 = tiempo1.plusNanos(10)
+      val nano = tiempo2.nano - tiempo1.nano
+      respuesta = Respuesta(CodigoHttp.NOT_IMPLEMENTED, "todavia no funciona", nano, pedidoActual)
     }
+     */
+    val cuerpoRespuesta = ""
+    val respuesta = Respuesta(validarProtocoloPedido(protocoloPedido), cuerpoRespuesta, tiempoRespuesta, pedidoActual)
+    respuestasRealizadas.add(respuesta)
     return respuesta
   }
 
-  fun fueUnPedidoExitoso(){pedidosExistosos+=1}
+  //probar
+  fun cantidadDeRespuestasExitosas() = respuestasRealizadas.filter { it.esExitosa() }.size
+  //probar
+  fun porcentajeDeRespuestasExitosas() = (this.cantidadDeRespuestasExitosas() * 100)/respuestasRealizadas.size
+  //probar
+  fun tiempoDeRespuestaPromedio() = respuestasRealizadas.sumBy { it.tiempo } / respuestasRealizadas.size
 }
