@@ -8,6 +8,11 @@ import java.time.LocalDateTime
 class ServidorWebTest : DescribeSpec({
 
   val pedido1 = Pedido("194.168.2.0","http://pepito.com.ar/documentos/doc1.html",LocalDateTime.now())
+  val pedido2 = Pedido("194.168.2.0","http://pepito.com.ar/documentos/doc2.html",LocalDateTime.now())
+  val pedidoConError = Pedido("194.168.2.0","https://pepito.com.ar/documentos/doc1.html",LocalDateTime.now())
+  val pedidoConError2 = Pedido("194.168.2.0","https://pepito.com.ar/documentos/doc1.html",LocalDateTime.now())
+  val server = ServidorWeb()
+
 
   describe("pedido"){
 
@@ -24,10 +29,10 @@ class ServidorWebTest : DescribeSpec({
   }
 
   describe("Un servidor web") {
-    val server = ServidorWeb()
+
 
     describe("un pedido erroneo"){
-      val pedidoConError = Pedido("194.168.2.0","https://pepito.com.ar/documentos/doc1.html",LocalDateTime.now())
+
 
       it("devuele el codigo 501"){
         server.recibirPedido(pedidoConError)
@@ -72,6 +77,15 @@ class ServidorWebTest : DescribeSpec({
         respuesta.tiempo.shouldBe(10)
         respuesta.pedido.shouldBe(pedido1)
       }
+    }
+    describe("estadisticas"){
+      val respuesta1 = server.procesarPedido(pedido1)
+      val respuesta2 = server.procesarPedido(pedido2)
+      val respuesta3 = server.procesarPedido(pedidoConError)
+      val respuesta4 = server.procesarPedido(pedidoConError2)
+
+      server.tiempoDeRespuestaPromedio().shouldBe(10)
+      server.porcentajeDeRespuestasExitosas().shouldBe(50.0)
     }
   }
 })
