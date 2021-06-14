@@ -33,6 +33,11 @@ class ServidorWeb(val dominioServidor: String) {
   // tiempo de respuesta preestablecido por el enunciado
   val tiempoRespuesta = 10
 
+  var modulos = mutableListOf<Modulo>()
+
+  fun agregarModulo(nuevoModulo: Modulo) = this.modulos.add(nuevoModulo)
+  // fun quitarModulo(moduloDescartado)
+
   fun procesarPedido(pedido: Pedido) : Respuesta {
     val protocoloPedido = pedido.protocoloUrl()
     val rutaPedido = pedido.rutaUrl()
