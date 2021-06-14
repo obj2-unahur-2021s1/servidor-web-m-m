@@ -7,11 +7,12 @@ import java.time.LocalDateTime
 
 class ServidorWebTest : DescribeSpec({
 
+  val server = ServidorWeb("pepito.com.ar")
+
   val pedido1 = Pedido("194.168.2.0","http://pepito.com.ar/documentos/doc1.html",LocalDateTime.now())
   val pedido2 = Pedido("194.168.2.0","http://pepito.com.ar/documentos/doc2.html",LocalDateTime.now())
   val pedidoConError = Pedido("194.168.2.0","https://pepito.com.ar/documentos/doc1.html",LocalDateTime.now())
   val pedidoConError2 = Pedido("194.168.2.0","https://pepito.com.ar/documentos/doc1.html",LocalDateTime.now())
-  val server = ServidorWeb()
 
 
   describe("pedido"){

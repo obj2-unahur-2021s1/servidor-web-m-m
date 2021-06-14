@@ -16,6 +16,8 @@ enum class CodigoHttp(val codigo: Int) {
 class Pedido(val ip: String, val url: String, val fechaHora: LocalDateTime) {
   fun protocoloUrl() = url.split(":").first()
   fun rutaUrl() = url.split(dominioServidor).last()
+  // alternativa con RegEx -- se puede complejizar para extraer el dominio
+  // fun rutaUrl() = "/" + url.split("""\.[a-z]*/""".toRegex()).last()
   fun extensionUrl() = url.split(".").last()
 }
 
@@ -23,7 +25,7 @@ class Respuesta(val codigo: CodigoHttp, val body: String, val tiempo: Int, val p
   fun esExitosa() = codigo == CodigoHttp.OK
 }
 
-class ServidorWeb() {
+class ServidorWeb(val dominioServidor: String) {
   val respuestasRealizadas = mutableListOf<Respuesta>()
   //en teoria el lateinit evita q se envie un null
   lateinit var pedidoActual: Pedido
@@ -36,8 +38,8 @@ class ServidorWeb() {
     val rutaPedido = pedido.rutaUrl()
     val extensionPedido = pedido.extensionUrl()
 
-    // ACÁ VAN LOS MÓDULOS
-    // ACÁ VAN LOS ANALIZADORES
+    // ACÁ VAN LOS LLAMADOS A LOS MÓDULOS
+    // ACÁ VAN LOS LLAMADOS A LOS ANALIZADORES
 
     // esto es en primera instancia.... después se modifica con la inclusión de los módulos
     val cuerpoRespuesta = ""
