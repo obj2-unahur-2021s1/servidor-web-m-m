@@ -1,5 +1,7 @@
 package ar.edu.unahur.obj2.servidorWeb
 
+// REVISAR O CONSULTAR SI ESTAMOS LLAMANDO BIEN A LOS ENUM...
+
 enum class Extension(val tipo: Tipo) {
     jpg(Tipo.GRAFICO),
     png(Tipo.GRAFICO),
@@ -18,13 +20,13 @@ class Modulo(tipo: Tipo, val tiempoRespuesta: Int) {
 
     var extensiones = mutableSetOf<Extension>()
 
-    fun definirExtension(nuevaExtension: Extension) = extensiones.add(nuevaExtension)
+    fun agregarExtension(nuevaExtension: Extension) = extensiones.add(nuevaExtension)
 
-    fun validarTipoExtension(extensionPedido: String) : Boolean = extensiones.any { it.toString() == extensionPedido }
+    fun validarExtension(extensionPedido: String) : Boolean = extensiones.any { it.toString() == extensionPedido }
 
     fun procesarPedido(pedido: Pedido) : String {
         val cuerpo : String
-        when (validarTipoExtension(pedido.extensionUrl())) {
+        when (validarExtension(pedido.extensionUrl())) {
             true -> {
                 cuerpo = "Se procesó la extensión " + pedido.extensionUrl()
             }
