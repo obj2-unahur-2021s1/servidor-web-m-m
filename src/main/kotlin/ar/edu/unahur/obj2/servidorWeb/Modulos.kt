@@ -15,7 +15,7 @@ enum class Tipo() {
     TEXTO, GRAFICO, SONIDO, HTML
 }
 
-
+//creo q hay q definir al crearse su body
 class Modulo(tipo: Tipo, val tiempoRespuesta: Int) {
 
     var extensiones = mutableSetOf<Extension>()
@@ -34,4 +34,6 @@ class Modulo(tipo: Tipo, val tiempoRespuesta: Int) {
         }
         return cuerpo
     }
+
+    fun puedeResponderElPedido(pedido: Pedido) =  extensiones.any{it.toString() == pedido.extensionUrl()}
 }

@@ -45,6 +45,18 @@ class ServidorWeb(val dominioServidor: String) {
     val extensionPedido = pedido.extensionUrl()
 
     // ACÁ VAN LOS LLAMADOS A LOS MÓDULOS
+    /*
+      //en el caso de que alguno puede resolver
+      if(this.puedeAlgunModuloResolverElPedido(pedido)){
+
+      }
+
+      //caso de error
+      else{
+
+
+      }
+     */
     // ACÁ VAN LOS LLAMADOS A LOS ANALIZADORES
 
     // esto es en primera instancia.... después se modifica con la inclusión de los módulos
@@ -54,6 +66,10 @@ class ServidorWeb(val dominioServidor: String) {
 
     return respuesta
   }
+
+  fun puedeAlgunModuloResolverElPedido(pedido: Pedido) = modulos.any { it.puedeResponderElPedido(pedido)}
+
+  //fun primerModuloQuePuedeResolverElPedido(pedido: Pedido) = modulos.find {  }
 
   fun validarProtocoloPedido(protocolo: String) = if (protocolo == "http") CodigoHttp.OK else CodigoHttp.NOT_IMPLEMENTED
 
