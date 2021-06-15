@@ -1,6 +1,7 @@
 package ar.edu.unahur.obj2.servidorWeb
 
 import io.kotest.core.spec.style.DescribeSpec
+import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import java.time.LocalDateTime
@@ -31,9 +32,7 @@ class ServidorWebTest : DescribeSpec({
 
   describe("Un servidor web") {
 
-
     describe("un pedido erroneo"){
-
 
       it("devuele el codigo 501"){
         server.recibirPedido(pedidoConError)
@@ -85,8 +84,32 @@ class ServidorWebTest : DescribeSpec({
       val respuesta3 = server.procesarPedido(pedidoConError)
       val respuesta4 = server.procesarPedido(pedidoConError2)
 
-      server.tiempoDeRespuestaPromedio().shouldBe(10)
-      server.porcentajeDeRespuestasExitosas().shouldBe(50.0)
+      it("el tiempo de respuesta promedio es de 10"){
+        server.tiempoDeRespuestaPromedio().shouldBe(10)
+      }
+      it("el porcentaje de respuesta exitosa es de 50.0"){
+        server.porcentajeDeRespuestasExitosas().shouldBe(50.0)
+      }
     }
+
+   describe("se agrega y elimina modulos"){
+     val moduloGrafico = Modulo(Tipo.GRAFICO, 15)
+     val moduloTexto = Modulo(Tipo.TEXTO,12)
+
+     it("se agregan los 2 "){
+       server.agregarModulo(moduloGrafico)
+       server.agregarModulo(moduloTexto)
+
+       server.modulos.size.shouldBe(2)
+     }
+     it("se agrega los 2 y se elimina 1"){
+       server.agregarModulo(moduloGrafico)
+       server.agregarModulo(moduloTexto)
+       server.quitarModulo(moduloGrafico)
+
+       server.modulos.size.shouldBe(1)
+       server.modulos.contains(moduloGrafico).shouldBeFalse()
+     }
+   }
   }
 })

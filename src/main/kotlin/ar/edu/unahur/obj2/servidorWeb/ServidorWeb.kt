@@ -36,7 +36,8 @@ class ServidorWeb(val dominioServidor: String) {
   var modulos = mutableListOf<Modulo>()
 
   fun agregarModulo(nuevoModulo: Modulo) = modulos.add(nuevoModulo)
-  // fun quitarModulo(moduloDescartado)
+  //solucion parcial, creo q seria mejor q se pudieran identificar los modulos
+  fun quitarModulo(moduloDescartado: Modulo) = modulos.removeIf { it.hashCode() == moduloDescartado.hashCode() }
 
   fun procesarPedido(pedido: Pedido) : Respuesta {
     val protocoloPedido = pedido.protocoloUrl()
