@@ -35,7 +35,7 @@ class ServidorWeb(val dominioServidor: String) {
 
   var modulos = mutableListOf<Modulo>()
 
-  fun agregarModulo(nuevoModulo: Modulo) = this.modulos.add(nuevoModulo)
+  fun agregarModulo(nuevoModulo: Modulo) = modulos.add(nuevoModulo)
   // fun quitarModulo(moduloDescartado)
 
   fun procesarPedido(pedido: Pedido) : Respuesta {
