@@ -43,33 +43,36 @@ class ServidorWeb(val dominioServidor: String) {
     val protocoloPedido = pedido.protocoloUrl()
     val rutaPedido = pedido.rutaUrl()
     val extensionPedido = pedido.extensionUrl()
-
+    //val respuesta = null
     // ACÁ VAN LOS LLAMADOS A LOS MÓDULOS
     /*
       //en el caso de que alguno puede resolver
-      if(this.puedeAlgunModuloResolverElPedido(pedido)){
-
+      if(this.primerModuloQuePuedeResolverElPedido(pedido) != null){
+         val moduloResolvente = this.primerModuloQuePuedeResolverElPedido(pedido)
+         respuesta = Respuesta(validarProtocoloPedido(protocoloPedido), moduloResolvente.cuerpo[yo creo q deberiamos usar funcion],
+                                moduloResolvente.tiempoRespuesta, pedido)
       }
 
       //caso de error
       else{
 
-
+        respuesta = Respuesta(CodigoHttp.NOT_IMPLEMENTED,"", tiempoRespuesta, pedido)
       }
+       respuestasRealizadas.add(respuesta)
      */
     // ACÁ VAN LOS LLAMADOS A LOS ANALIZADORES
 
     // esto es en primera instancia.... después se modifica con la inclusión de los módulos
     val cuerpoRespuesta = ""
-    val respuesta = Respuesta(validarProtocoloPedido(protocoloPedido), cuerpoRespuesta, tiempoRespuesta, pedido)
+    val respuesta = Respuesta(this.validarProtocoloPedido(protocoloPedido), cuerpoRespuesta, tiempoRespuesta, pedido)
     respuestasRealizadas.add(respuesta)
 
     return respuesta
   }
 
-  fun puedeAlgunModuloResolverElPedido(pedido: Pedido) = modulos.any { it.puedeResponderElPedido(pedido)}
+  //fun puedeAlgunModuloResolverElPedido(pedido: Pedido) = modulos.any { it.puedeResponderElPedido(pedido)}
 
-  //fun primerModuloQuePuedeResolverElPedido(pedido: Pedido) = modulos.find {  }
+  fun primerModuloQuePuedeResolverElPedido(pedido: Pedido) = modulos.find { it.puedeResponderElPedido(pedido) }
 
   fun validarProtocoloPedido(protocolo: String) = if (protocolo == "http") CodigoHttp.OK else CodigoHttp.NOT_IMPLEMENTED
 
@@ -99,7 +102,7 @@ class ServidorWeb(val dominioServidor: String) {
       val tiempo1 = LocalDateTime.now()
       val tiempo2 = tiempo1.plusNanos(10)
       val nano = tiempo2.nano - tiempo1.nano
-      respuesta = Respuesta(CodigoHttp.NOT_IMPLEMENTED, "todavia no funciona", nano, pedidoActual)
+      respuesta = Respuesta(CodigoHttp.OK, "correcto", nano, pedidoActual)
     }
      */
     val cuerpoRespuesta = ""
