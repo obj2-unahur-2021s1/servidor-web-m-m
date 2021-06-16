@@ -4,6 +4,8 @@ abstract class Analizador {
 
     //no estoy seguro de esto
     abstract fun recibirRespuesta(respuesta: Respuesta)
+
+
 }
 
 //preguntar porq dice el modulo

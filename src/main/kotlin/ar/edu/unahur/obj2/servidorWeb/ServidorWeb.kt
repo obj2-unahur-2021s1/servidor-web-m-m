@@ -51,13 +51,15 @@ class ServidorWeb(val dominioServidor: String) {
     val protocoloPedido = pedido.protocoloUrl()
     val rutaPedido = pedido.rutaUrl()
     val extensionPedido = pedido.extensionUrl()
-    //val respuesta = null
+    var respuesta: Respuesta? = null
     // ACÁ VAN LOS LLAMADOS A LOS MÓDULOS
     /*
+
+     primero preguntar si el protocolo es valido
       //en el caso de que alguno puede resolver
       if(this.primerModuloQuePuedeResolverElPedido(pedido) != null){
          val moduloResolvente = this.primerModuloQuePuedeResolverElPedido(pedido)
-         respuesta = Respuesta(validarProtocoloPedido(protocoloPedido), moduloResolvente.cuerpo[yo creo q deberiamos usar funcion],
+         respuesta = Respuesta(validarProtocoloPedido(protocoloPedido), moduloResolvente.cuerpo,
                                 moduloResolvente.tiempoRespuesta, pedido)
       }
 
@@ -84,13 +86,14 @@ class ServidorWeb(val dominioServidor: String) {
 
   fun validarProtocoloPedido(protocolo: String) = if (protocolo == "http") CodigoHttp.OK else CodigoHttp.NOT_IMPLEMENTED
 
+  //si cada tiempo lo configura los modulos entonces no es necesaria esa funcion
   fun calcularTiempoRespuesta(fechaPedido: LocalDateTime) {
     // TODO: 11/6/21
     // retornar tiempo actual - tiempo del pedido
   }
 
   //creo que recibir y enviar deberian estar en una misma funcion
-
+  // arreglar essto para q sea una funcion
   fun recibirPedido(pedido: Pedido) {
     pedidoActual = pedido
   }
