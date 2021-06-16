@@ -16,7 +16,7 @@ enum class Tipo() {
 }
 
 //creo q hay q definir al crearse su body
-class Modulo(tipo: Tipo, val tiempoRespuesta: Int) {
+class Modulo(tipo: Tipo, val tiempoRespuesta: Int, val cuerpoRespuesta: String) {
 
     var extensiones = mutableSetOf<Extension>()
 
@@ -24,15 +24,16 @@ class Modulo(tipo: Tipo, val tiempoRespuesta: Int) {
 
     fun validarExtension(extensionPedido: String) : Boolean = extensiones.any { it.toString() == extensionPedido }
 
+    // ESTO HAY QUE REFORMULARLO
     fun procesarPedido(pedido: Pedido) : String {
-        val cuerpo : String
+        val respuestaModulo : String
         when (validarExtension(pedido.extensionUrl())) {
             true -> {
-                cuerpo = "Se procesó la extensión " + pedido.extensionUrl()
+                respuestaModulo = cuerpoRespuesta + pedido.extensionUrl()
             }
-            else -> { cuerpo = "" }
+            else -> { respuestaModulo = "" }
         }
-        return cuerpo
+        return respuestaModulo
     }
 
     fun puedeResponderElPedido(pedido: Pedido) =  extensiones.any{it.toString() == pedido.extensionUrl()}

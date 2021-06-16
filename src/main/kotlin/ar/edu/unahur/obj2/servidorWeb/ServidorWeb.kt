@@ -71,8 +71,8 @@ class ServidorWeb(val dominioServidor: String) {
     // ACÁ VAN LOS LLAMADOS A LOS ANALIZADORES
 
     // esto es en primera instancia.... después se modifica con la inclusión de los módulos
-    val cuerpoRespuesta = ""
-    val respuesta = Respuesta(this.validarProtocoloPedido(protocoloPedido), cuerpoRespuesta, tiempoRespuesta, pedido)
+
+    // val respuesta = Respuesta(this.validarProtocoloPedido(protocoloPedido), cuerpoRespuesta, tiempoRespuesta, pedido)
     respuestasRealizadas.add(respuesta)
 
     return respuesta

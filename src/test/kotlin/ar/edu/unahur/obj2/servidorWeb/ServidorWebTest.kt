@@ -112,4 +112,14 @@ class ServidorWebTest : DescribeSpec({
      }
    }
   }
+  describe("Servidor consulta módulos") {
+    val moduloTexto = Modulo(Tipo.TEXTO,12)
+    val pedidoOdt = Pedido("194.168.2.0","http://pepito.com.ar/documentos/apuntes.odt", LocalDateTime.now())
+    moduloTexto.agregarExtension(Extension.odt)
+    server.agregarModulo(moduloTexto)
+    it("Consulta resuelta") {
+      //server.
+    //server.primerModuloQuePuedeResolverElPedido(pedidoOdt).shouldBe(true)
+    }
+  }
 })
