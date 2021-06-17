@@ -54,7 +54,8 @@ class ServidorWeb(val dominioServidor: String) {
     var respuesta: Respuesta? = null
     // ACÁ VAN LOS LLAMADOS A LOS MÓDULOS
 
-    //refact sta parte y probar
+    //refact sta parte
+    //pensar un modulo en el caso que se genera un error o no se encuentra
      if(this.validarProtocoloPedido(protocoloPedido)!=  CodigoHttp.NOT_IMPLEMENTED ){
        //en el caso de que alguno puede resolver
        if(this.primerModuloQuePuedeResolverElPedido(pedido) != null){
@@ -72,13 +73,9 @@ class ServidorWeb(val dominioServidor: String) {
        respuesta = Respuesta(CodigoHttp.NOT_IMPLEMENTED,"", tiempoRespuesta, pedido)
      }
 
-
-
     // ACÁ VAN LOS LLAMADOS A LOS ANALIZADORES
 
-    // esto es en primera instancia.... después se modifica con la inclusión de los módulos
-
-    // val respuesta = Respuesta(this.validarProtocoloPedido(protocoloPedido), cuerpoRespuesta, tiempoRespuesta, pedido)
+    // analizadores.forEach{it.agregarModuloYRespuesta(modulo,respuesta)}
 
     //esto enrrealidad deberia agregrase a los analizadores
     if (respuesta != null) {
