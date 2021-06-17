@@ -67,7 +67,8 @@ class ServidorWeb(val dominioServidor: String) {
          respuesta = Respuesta(CodigoHttp.NOT_FOUND,"", tiempoRespuesta, pedido)
        }
 
-     } else{
+     }
+     else{
        respuesta = Respuesta(CodigoHttp.NOT_IMPLEMENTED,"", tiempoRespuesta, pedido)
      }
 
@@ -79,6 +80,7 @@ class ServidorWeb(val dominioServidor: String) {
 
     // val respuesta = Respuesta(this.validarProtocoloPedido(protocoloPedido), cuerpoRespuesta, tiempoRespuesta, pedido)
 
+    //esto enrrealidad deberia agregrase a los analizadores
     if (respuesta != null) {
       respuestasRealizadas.add(respuesta)
     }
