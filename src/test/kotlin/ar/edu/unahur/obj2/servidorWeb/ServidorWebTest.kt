@@ -93,8 +93,8 @@ class ServidorWebTest : DescribeSpec({
     }
 
    describe("se agrega y elimina modulos"){
-     val moduloGrafico = Modulo(Tipo.GRAFICO, 15)
-     val moduloTexto = Modulo(Tipo.TEXTO,12)
+     val moduloGrafico = Modulo(Tipo.GRAFICO, 15,"hola")
+     val moduloTexto = Modulo(Tipo.TEXTO,12,"hola")
 
      it("se agregan los 2 "){
        server.agregarModulo(moduloGrafico)
@@ -113,7 +113,7 @@ class ServidorWebTest : DescribeSpec({
    }
   }
   describe("Servidor consulta módulos") {
-    val moduloTexto = Modulo(Tipo.TEXTO,12)
+    val moduloTexto = Modulo(Tipo.TEXTO,12,"hola")
     val pedidoOdt = Pedido("194.168.2.0","http://pepito.com.ar/documentos/apuntes.odt", LocalDateTime.now())
     moduloTexto.agregarExtension(Extension.odt)
     server.agregarModulo(moduloTexto)

@@ -25,15 +25,8 @@ class Modulo(tipo: Tipo, val tiempoRespuesta: Int, val cuerpoRespuesta: String) 
     fun validarExtension(extensionPedido: String) : Boolean = extensiones.any { it.toString() == extensionPedido }
 
     // ESTO HAY QUE REFORMULARLO
-    fun procesarPedido(pedido: Pedido) : String {
-        val respuestaModulo : String
-        when (validarExtension(pedido.extensionUrl())) {
-            true -> {
-                respuestaModulo = cuerpoRespuesta + pedido.extensionUrl()
-            }
-            else -> { respuestaModulo = "" }
-        }
-        return respuestaModulo
+    fun procesarPedido(pedido: Pedido) : Respuesta {
+        return Respuesta(CodigoHttp.OK,cuerpoRespuesta,tiempoRespuesta,pedido)
     }
 
     fun puedeResponderElPedido(pedido: Pedido) =  extensiones.any{it.toString() == pedido.extensionUrl()}

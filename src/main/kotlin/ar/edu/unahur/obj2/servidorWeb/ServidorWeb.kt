@@ -47,35 +47,42 @@ class ServidorWeb(val dominioServidor: String) {
   fun quitarAnalizador(analizadorDescartado: Analizador) = analizadores.removeIf{it.hashCode() == analizadorDescartado.hashCode() }
 
 
-  fun procesarPedido(pedido: Pedido) : Respuesta {
+  fun procesarPedido(pedido: Pedido) : Respuesta? {
     val protocoloPedido = pedido.protocoloUrl()
     val rutaPedido = pedido.rutaUrl()
     val extensionPedido = pedido.extensionUrl()
     var respuesta: Respuesta? = null
     // ACÁ VAN LOS LLAMADOS A LOS MÓDULOS
-    /*
 
-     primero preguntar si el protocolo es valido
-      //en el caso de que alguno puede resolver
-      if(this.primerModuloQuePuedeResolverElPedido(pedido) != null){
+    //refact sta parte y probar
+     if(this.validarProtocoloPedido(protocoloPedido)!=  CodigoHttp.NOT_IMPLEMENTED ){
+       //en el caso de que alguno puede resolver
+       if(this.primerModuloQuePuedeResolverElPedido(pedido) != null){
          val moduloResolvente = this.primerModuloQuePuedeResolverElPedido(pedido)
-         respuesta = Respuesta(validarProtocoloPedido(protocoloPedido), moduloResolvente.cuerpo,
-                                moduloResolvente.tiempoRespuesta, pedido)
-      }
+         if (moduloResolvente != null) {
+           respuesta = moduloResolvente.procesarPedido(pedido)
+         }
+       }
+       else{
+         respuesta = Respuesta(CodigoHttp.NOT_FOUND,"", tiempoRespuesta, pedido)
+       }
 
-      //caso de error
-      else{
+     } else{
+       respuesta = Respuesta(CodigoHttp.NOT_IMPLEMENTED,"", tiempoRespuesta, pedido)
+     }
 
-        respuesta = Respuesta(CodigoHttp.NOT_IMPLEMENTED,"", tiempoRespuesta, pedido)
-      }
-       respuestasRealizadas.add(respuesta)
-     */
+
+
     // ACÁ VAN LOS LLAMADOS A LOS ANALIZADORES
 
     // esto es en primera instancia.... después se modifica con la inclusión de los módulos
 
     // val respuesta = Respuesta(this.validarProtocoloPedido(protocoloPedido), cuerpoRespuesta, tiempoRespuesta, pedido)
-    respuestasRealizadas.add(respuesta)
+
+    if (respuesta != null) {
+      respuestasRealizadas.add(respuesta)
+    }
+
 
     return respuesta
   }
@@ -129,3 +136,5 @@ class ServidorWeb(val dominioServidor: String) {
   //probar
   fun tiempoDeRespuestaPromedio() = respuestasRealizadas.sumBy { it.tiempo } / respuestasRealizadas.size
 }
+
+
