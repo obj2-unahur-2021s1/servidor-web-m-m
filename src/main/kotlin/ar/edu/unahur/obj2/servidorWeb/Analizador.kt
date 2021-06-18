@@ -2,7 +2,7 @@ package ar.edu.unahur.obj2.servidorWeb
 //preguntar bien mañana para cerra idea
 abstract class Analizador {
 
-    //val modulosYRespuestas = mutableMapOf(<Modulo,mutableListOf<Respuesta>()>)
+    //val modulosYRespuestas = mutableMapOf <Modulo, mutableListOf<Respuesta>>()
 
     //no estoy seguro de esto
     abstract fun recibirRespuesta(respuesta: Respuesta)
