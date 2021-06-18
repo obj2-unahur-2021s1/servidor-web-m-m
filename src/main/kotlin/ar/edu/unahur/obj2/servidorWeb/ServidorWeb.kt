@@ -1,7 +1,6 @@
 package ar.edu.unahur.obj2.servidorWeb
 
 import java.time.LocalDateTime
-import kotlin.concurrent.timer
 
 val dominioServidor = "pepito.com.ar"
 
@@ -16,7 +15,6 @@ enum class CodigoHttp(val codigo: Int) {
 class Pedido(val ip: String, val url: String, val fechaHora: LocalDateTime) {
   fun protocoloUrl() = url.split(":").first()
   fun rutaUrl() = url.split(dominioServidor).last()
-  // alternativa con RegEx -- se puede complejizar para extraer el dominio
   // fun rutaUrl() = "/" + url.split("""\.[a-z]*/""".toRegex()).last()
   fun extensionUrl() = url.split(".").last()
 }
@@ -78,25 +76,14 @@ class ServidorWeb(val dominioServidor: String) {
     // analizadores.forEach{it.agregarModuloYRespuesta(modulo,respuesta)}
 
     //esto enrrealidad deberia agregrase a los analizadores
-    if (respuesta != null) {
-      respuestasRealizadas.add(respuesta)
-    }
 
 
     return respuesta
   }
 
-  //fun puedeAlgunModuloResolverElPedido(pedido: Pedido) = modulos.any { it.puedeResponderElPedido(pedido)}
-
   fun primerModuloQuePuedeResolverElPedido(pedido: Pedido) = modulos.find { it.puedeResponderElPedido(pedido) }
 
   fun validarProtocoloPedido(protocolo: String) = if (protocolo == "http") CodigoHttp.OK else CodigoHttp.NOT_IMPLEMENTED
-
-  //si cada tiempo lo configura los modulos entonces no es necesaria esa funcion
-  fun calcularTiempoRespuesta(fechaPedido: LocalDateTime) {
-    // TODO: 11/6/21
-    // retornar tiempo actual - tiempo del pedido
-  }
 
   //creo que recibir y enviar deberian estar en una misma funcion
   // arreglar essto para q sea una funcion
@@ -106,34 +93,12 @@ class ServidorWeb(val dominioServidor: String) {
 
   fun enviarRespuesta(): Respuesta? {
     val protocoloPedido = pedidoActual.protocoloUrl()
-    //var respuesta: Respuesta? = null
-    /*
-    if (!pedidoActual.protocoloUrl().equals("http")) {
-      //solucion parcial para los 10 milisegundos
-      val tiempo1 = LocalDateTime.now()
-      val tiempo2 = tiempo1.plusNanos(10)
-      val nano = tiempo2.nano - tiempo1.nano
-      //no se si se devuelve asi un enun
-      respuesta = Respuesta(CodigoHttp.NOT_IMPLEMENTED, "todavia no funciona", nano, pedidoActual)
-    }else{
-      val tiempo1 = LocalDateTime.now()
-      val tiempo2 = tiempo1.plusNanos(10)
-      val nano = tiempo2.nano - tiempo1.nano
-      respuesta = Respuesta(CodigoHttp.OK, "correcto", nano, pedidoActual)
-    }
-     */
+
     val cuerpoRespuesta = ""
     val respuesta = Respuesta(validarProtocoloPedido(protocoloPedido), cuerpoRespuesta, tiempoRespuesta, pedidoActual)
     respuestasRealizadas.add(respuesta)
     return respuesta
   }
-
-  //probar
-  fun cantidadDeRespuestasExitosas() = respuestasRealizadas.filter { it.esExitosa() }.size
-  //probar
-  fun porcentajeDeRespuestasExitosas() = (this.cantidadDeRespuestasExitosas() * 100)/respuestasRealizadas.size
-  //probar
-  fun tiempoDeRespuestaPromedio() = respuestasRealizadas.sumBy { it.tiempo } / respuestasRealizadas.size
 }
 
 

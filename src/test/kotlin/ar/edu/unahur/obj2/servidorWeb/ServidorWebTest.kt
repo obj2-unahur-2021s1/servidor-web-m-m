@@ -103,22 +103,6 @@ class ServidorWebTest : DescribeSpec({
         }
 
       }
-      //esto seria de los analizadores, esta mal aca
-      /*
-      describe("estadisticas"){
-        val respuesta1 = server.procesarPedido(pedido1)
-        val respuesta2 = server.procesarPedido(pedido2)
-        val respuesta3 = server.procesarPedido(pedidoConError)
-        val respuesta4 = server.procesarPedido(pedidoConError2)
-
-        it("el tiempo de respuesta promedio es de 10"){
-          server.tiempoDeRespuestaPromedio().shouldBe(10)
-        }
-        it("el porcentaje de respuesta exitosa es de 50.0"){
-          server.porcentajeDeRespuestasExitosas().shouldBe(50.0)
-        }
-      }
-      */
       describe("se agrega y elimina modulos"){
         val moduloGrafico = Modulo(Tipo.GRAFICO, 15,"hola")
         val moduloTexto = Modulo(Tipo.TEXTO,12,"hola")
