@@ -12,7 +12,7 @@ enum class Extension(val tipo: Tipo) {
 }
 
 enum class Tipo() {
-    TEXTO, GRAFICO, SONIDO, HTML
+    TEXTO, GRAFICO, SONIDO, HTML, NO_RESUELTO, NO_ENCONTRADO
 }
 
 //creo q hay q definir al crearse su body

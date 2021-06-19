@@ -32,12 +32,12 @@ class ServidorWeb(val dominioServidor: String) {
 
 
   fun agregarModulo(nuevoModulo: Modulo) = modulos.add(nuevoModulo)
-  //solucion parcial, creo q seria mejor q se pudieran identificar los modulos
-  fun quitarModulo(moduloDescartado: Modulo) = modulos.removeIf { it.hashCode() == moduloDescartado.hashCode() }
+
+  fun quitarModulo(moduloDescartado: Modulo) = modulos.remove(moduloDescartado)
 
   fun agregarAnalizador(analizador: Analizador) = analizadores.add(analizador)
-  //solucion parcial
-  fun quitarAnalizador(analizadorDescartado: Analizador) = analizadores.removeIf{it.hashCode() == analizadorDescartado.hashCode() }
+
+  fun quitarAnalizador(analizadorDescartado: Analizador) = analizadores.remove(analizadorDescartado)
 
 
   fun procesarPedido(pedido: Pedido) : Respuesta? {
@@ -58,13 +58,14 @@ class ServidorWeb(val dominioServidor: String) {
        }
        //generar un tipo para cuando hay un modulo que no resuelve
        else{
-
+         moduloResolvente = Modulo(Tipo.NO_ENCONTRADO,tiempoRespuesta,"")
          respuesta = Respuesta(CodigoHttp.NOT_FOUND,"", tiempoRespuesta, pedido)
        }
 
      }
      //generar un tipo para cuando hay un modulo que no resuelve
      else{
+       moduloResolvente = Modulo(Tipo.NO_RESUELTO,tiempoRespuesta,"")
        respuesta = Respuesta(CodigoHttp.NOT_IMPLEMENTED,"", tiempoRespuesta, pedido)
      }
 
