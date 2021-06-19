@@ -3,6 +3,7 @@ package ar.edu.unahur.obj2.servidorWeb
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
+import io.kotest.matchers.shouldBe
 import java.time.LocalDateTime
 
 class AnalizadorTest: DescribeSpec( {
@@ -24,12 +25,16 @@ class AnalizadorTest: DescribeSpec( {
 
         describe("funciones basicas de los analizadores"){
             val analizador1 = AnalizadorDemora(8)
-            it("se agregan modulos y respuestas de manera correcta"){
-                analizador1.agregarModuloYRespuesta(modulo1,respuesta)
-                analizador1.agregarModuloYRespuesta(modulo1,respuesta4)
-                analizador1.agregarModuloYRespuesta(modulo2,respuesta2)
 
+            analizador1.agregarModuloYRespuesta(modulo1,respuesta)
+            analizador1.agregarModuloYRespuesta(modulo1,respuesta4)
+            analizador1.agregarModuloYRespuesta(modulo2,respuesta2)
+
+            it("se agregan modulos y respuestas de manera correcta"){
                 analizador1.modulosYRespuestas.shouldNotBeNull()
+            }
+            it("el modulo1 tiene 2 respuestas"){
+                analizador1.cantidadDeRespuestasPorModulo(modulo1).shouldBe(2)
             }
         }
 

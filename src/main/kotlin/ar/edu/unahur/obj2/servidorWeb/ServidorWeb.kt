@@ -42,9 +42,8 @@ class ServidorWeb(val dominioServidor: String) {
 
   fun procesarPedido(pedido: Pedido) : Respuesta? {
     val protocoloPedido = pedido.protocoloUrl()
-    val rutaPedido = pedido.rutaUrl()
-    val extensionPedido = pedido.extensionUrl()
     var respuesta: Respuesta? = null
+    var moduloResolvente: Modulo? = null
     // ACÁ VAN LOS LLAMADOS A LOS MÓDULOS
 
     //refact sta parte
@@ -52,26 +51,32 @@ class ServidorWeb(val dominioServidor: String) {
      if(this.validarProtocoloPedido(protocoloPedido)!=  CodigoHttp.NOT_IMPLEMENTED ){
        //en el caso de que alguno puede resolver
        if(this.primerModuloQuePuedeResolverElPedido(pedido) != null){
-         val moduloResolvente = this.primerModuloQuePuedeResolverElPedido(pedido)
+         moduloResolvente = this.primerModuloQuePuedeResolverElPedido(pedido)
          if (moduloResolvente != null) {
            respuesta = moduloResolvente.procesarPedido(pedido)
          }
        }
+       //generar un tipo para cuando hay un modulo que no resuelve
        else{
+
          respuesta = Respuesta(CodigoHttp.NOT_FOUND,"", tiempoRespuesta, pedido)
        }
 
      }
+     //generar un tipo para cuando hay un modulo que no resuelve
      else{
        respuesta = Respuesta(CodigoHttp.NOT_IMPLEMENTED,"", tiempoRespuesta, pedido)
      }
 
     // ACÁ VAN LOS LLAMADOS A LOS ANALIZADORES
 
-    // analizadores.forEach{it.agregarModuloYRespuesta(modulo,respuesta)}
+    //se agrega a los analizadores
+    analizadores.forEach{
+      if (moduloResolvente != null && respuesta != null ) {
+          it.agregarModuloYRespuesta(moduloResolvente,respuesta)
 
-    //esto enrrealidad deberia agregrase a los analizadores
-
+      }
+    }
 
     return respuesta
   }

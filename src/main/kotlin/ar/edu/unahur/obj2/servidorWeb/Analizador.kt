@@ -4,36 +4,28 @@ abstract class Analizador {
 
     val modulosYRespuestas = mutableMapOf <Modulo,MutableList<Respuesta>>()
 
-    //no estoy seguro de esto
-    abstract fun recibirRespuesta(respuesta: Respuesta)
-
     fun agregarModuloYRespuesta(modulo: Modulo,respuesta: Respuesta){
         if(!modulosYRespuestas.containsKey(modulo)){
             modulosYRespuestas.put(modulo, mutableListOf<Respuesta>())
         }
         modulosYRespuestas[modulo]?.add(respuesta)
     }
+
+    fun cantidadDeRespuestasPorModulo(modulo: Modulo) = modulosYRespuestas[modulo]?.size
 }
 
 //preguntar porq dice el modulo
 class AnalizadorDemora(val demoraMinima: Int): Analizador(){
-    override fun recibirRespuesta(respuesta: Respuesta) {
-        TODO("Not yet implemented")
-    }
 
 }
 
 class AnalizadorIpSospechosa: Analizador(){
-    override fun recibirRespuesta(respuesta: Respuesta) {
-        TODO("Not yet implemented")
-    }
+
 }
 
 class AnalizadorEstadisticas: Analizador(){
-    override fun recibirRespuesta(respuesta: Respuesta) {
-        TODO("Not yet implemented")
-    }
-    //probar
+
+//probar
     //fun cantidadDeRespuestasExitosas() = modulosYRespuestas.filterValues { it.esExitosa() }.size
     //probar
     //fun porcentajeDeRespuestasExitosas() = (this.cantidadDeRespuestasExitosas() * 100)/modulosYRespuestas.size

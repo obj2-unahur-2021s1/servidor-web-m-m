@@ -123,13 +123,31 @@ class ServidorWebTest : DescribeSpec({
         }
       }
       describe("Servidor consulta módulos") {
-        val moduloTexto = Modulo(Tipo.TEXTO,12,"hola")
-        val pedidoOdt = Pedido("194.168.2.0","http://pepito.com.ar/documentos/apuntes.odt", LocalDateTime.now())
+
+        val modulo = Modulo(Tipo.HTML,12,"hola mundo")
+        val moduloTexto = Modulo(Tipo.TEXTO, 12, "hola")
+        val pedidoOdt = Pedido("194.168.2.0", "http://pepito.com.ar/documentos/apuntes.odt", LocalDateTime.now())
+        val analizador1 = AnalizadorDemora(8)
+
         moduloTexto.agregarExtension(Extension.odt)
+        moduloTexto.agregarExtension(Extension.docx)
+
+        modulo.agregarExtension(Extension.html)
+        server.agregarModulo(modulo)
         server.agregarModulo(moduloTexto)
+
+        server.agregarAnalizador(analizador1)
+
         it("hay un modulo en el servidor que puede resolver el pedido") {
           server.primerModuloQuePuedeResolverElPedido(pedidoOdt).shouldNotBe(null)
         }
+
+        it("hay 2 respuestas para el modulo"){
+
+          server.procesarPedido(pedido1)
+
+        }
+
       }
     }
 
