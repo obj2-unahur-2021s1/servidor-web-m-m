@@ -22,8 +22,6 @@ class Respuesta(val codigo: CodigoHttp, val body: String, val tiempo: Int, val p
 
 class ServidorWeb(val dominioServidor: String) {
   val respuestasRealizadas = mutableListOf<Respuesta>()
-  //en teoria el lateinit evita q se envie un null
-  lateinit var pedidoActual: Pedido
 
   // tiempo de respuesta preestablecido por el enunciado
   val tiempoRespuesta = 10
@@ -81,8 +79,6 @@ class ServidorWeb(val dominioServidor: String) {
   fun primerModuloQuePuedeResolverElPedido(pedido: Pedido) = modulos.find { it.puedeResponderElPedido(pedido) }
 
   fun validarProtocoloPedido(protocolo: String) = if (protocolo == "http") CodigoHttp.OK else CodigoHttp.NOT_IMPLEMENTED
-
-
 
   fun procesarPedidoSinModulos(pedido:Pedido): Respuesta {
     val cuerpoRespuesta = ""
