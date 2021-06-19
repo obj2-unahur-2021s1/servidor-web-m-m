@@ -145,6 +145,8 @@ class ServidorWebTest : DescribeSpec({
         it("hay 2 respuestas para el modulo"){
 
           server.procesarPedido(pedido1)
+          server.procesarPedido(pedido1)
+          analizador1.cantidadDeRespuestasPorModulo(modulo).shouldBe(2)
 
         }
 
