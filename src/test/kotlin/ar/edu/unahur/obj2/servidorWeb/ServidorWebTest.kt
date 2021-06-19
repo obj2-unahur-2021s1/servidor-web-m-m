@@ -36,15 +36,15 @@ class ServidorWebTest : DescribeSpec({
 
       describe("un pedido erroneo"){
         it("devuele el codigo 501"){
-          server.recibirPedido(pedidoConError)
+
           //suponiendo que tiene q devolver 501, en el caso que no eliminar el ultimo .codigo
-          val cod = server.enviarRespuesta()?.codigo?.codigo
+          val cod = server.procesarPedidoSinModulos(pedidoConError).codigo.codigo
           cod.shouldBe(501)
         }
 
         it("no devuelve el codigo de errror de esta ok(200) "){
-          server.recibirPedido(pedidoConError)
-          val cod = server.enviarRespuesta()?.codigo?.codigo
+
+          val cod = server.procesarPedidoSinModulos(pedidoConError).codigo
           cod.shouldNotBe(200)
         }
 
@@ -59,15 +59,15 @@ class ServidorWebTest : DescribeSpec({
           val tiempo2 = tiempo1.plusNanos(10)
           val nano = tiempo2.nano - tiempo1.nano
 
-          server.recibirPedido(pedidoConError)
-          val respuesta = server.enviarRespuesta()
-          respuesta?.tiempo.shouldBe(nano)
+
+          val respuesta = server.procesarPedidoSinModulos(pedido1)
+          respuesta.tiempo.shouldBe(nano)
         }
 
         it("el tiempo no sera distinto de 10 milisegundos"){
-          server.recibirPedido(pedidoConError)
-          val respuesta = server.enviarRespuesta()
-          respuesta?.tiempo.shouldNotBe(15)
+
+          val respuesta = server.procesarPedidoSinModulos(pedido1)
+          respuesta.tiempo.shouldNotBe(15)
         }
       }
     }

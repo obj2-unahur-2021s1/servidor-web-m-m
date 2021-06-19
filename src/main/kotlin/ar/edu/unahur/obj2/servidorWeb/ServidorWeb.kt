@@ -82,20 +82,15 @@ class ServidorWeb(val dominioServidor: String) {
 
   fun validarProtocoloPedido(protocolo: String) = if (protocolo == "http") CodigoHttp.OK else CodigoHttp.NOT_IMPLEMENTED
 
-  //creo que recibir y enviar deberian estar en una misma funcion
-  // arreglar essto para q sea una funcion
-  fun recibirPedido(pedido: Pedido) {
-    pedidoActual = pedido
-  }
 
-  fun enviarRespuesta(): Respuesta? {
-    val protocoloPedido = pedidoActual.protocoloUrl()
 
+  fun procesarPedidoSinModulos(pedido:Pedido): Respuesta {
     val cuerpoRespuesta = ""
-    val respuesta = Respuesta(validarProtocoloPedido(protocoloPedido), cuerpoRespuesta, tiempoRespuesta, pedidoActual)
-    respuestasRealizadas.add(respuesta)
+    val respuesta = Respuesta(this.validarProtocoloPedido(pedido.protocoloUrl()), cuerpoRespuesta, tiempoRespuesta, pedido)
     return respuesta
   }
+
 }
+
 
 
