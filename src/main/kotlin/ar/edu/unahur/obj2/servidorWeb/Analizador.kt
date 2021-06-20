@@ -12,11 +12,22 @@ abstract class Analizador {
     }
 
     fun cantidadDeRespuestasPorModulo(modulo: Modulo) = modulosYRespuestas[modulo]?.size
+
+    /*
+    fun cantidadDeRespuestaTotales(): Int{
+        var total = 0
+        total = total + modulosYRespuestas.forEach{this.cantidadDeRespuestasPorModulo(it)}
+
+        return 1
+    }
+*/
 }
 
-//preguntar porq dice el modulo
+
 class AnalizadorDemora(val demoraMinima: Int): Analizador(){
 
+    //probar
+    fun cantidadDeRespuestasDemoradasPorModulo(modulo: Modulo) = modulosYRespuestas[modulo]?.count { it.superaElTiempo(demoraMinima) }
 }
 
 class AnalizadorIpSospechosa: Analizador(){

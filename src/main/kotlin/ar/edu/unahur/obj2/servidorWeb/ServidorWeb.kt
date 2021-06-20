@@ -18,6 +18,8 @@ class Pedido(val ip: String, val url: String, val fechaHora: LocalDateTime) {
 
 class Respuesta(val codigo: CodigoHttp, val body: String, val tiempo: Int, val pedido: Pedido){
   fun esExitosa() = codigo == CodigoHttp.OK
+
+  fun superaElTiempo(tiempoParametro: Int) = tiempo > tiempoParametro
 }
 
 class ServidorWeb(val dominioServidor: String) {
@@ -43,7 +45,7 @@ class ServidorWeb(val dominioServidor: String) {
   fun procesarPedido(pedido: Pedido) : Respuesta? {
     val protocoloPedido = pedido.protocoloUrl()
     var respuesta: Respuesta? = null
-    var moduloResolvente: Modulo? = null
+    var moduloResolvente: Modulo?
     // ACÁ VAN LOS LLAMADOS A LOS MÓDULOS
 
     //refact sta parte
