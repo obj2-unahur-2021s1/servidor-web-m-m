@@ -142,11 +142,21 @@ class ServidorWebTest : DescribeSpec({
           server.primerModuloQuePuedeResolverElPedido(pedidoOdt).shouldNotBe(null)
         }
 
+        //estos creo q deberian estar en analizadorTest
         it("hay 2 respuestas para el modulo"){
 
           server.procesarPedido(pedido1)
           server.procesarPedido(pedido1)
           analizador1.cantidadDeRespuestasPorModulo(modulo).shouldBe(2)
+
+        }
+
+        it("la cantidad de respuestas totales deben ser 3"){
+          server.procesarPedido(pedido1)
+          server.procesarPedido(pedido1)
+          server.procesarPedido(pedidoOdt)
+
+          analizador1.cantidadDeRespuestaTotales().shouldBe(3)
 
         }
 

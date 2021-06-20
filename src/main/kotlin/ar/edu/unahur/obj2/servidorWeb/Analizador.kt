@@ -13,14 +13,15 @@ abstract class Analizador {
 
     fun cantidadDeRespuestasPorModulo(modulo: Modulo) = modulosYRespuestas[modulo]?.size
 
-    /*
+    // probar
     fun cantidadDeRespuestaTotales(): Int{
         var total = 0
-        total = total + modulosYRespuestas.forEach{this.cantidadDeRespuestasPorModulo(it)}
+        //recorro las claves y a cada clave( que son los modulos ) llamo a cantidadDeRespuestasPorModulo y sumo
+        total += modulosYRespuestas.keys.sumBy { this.cantidadDeRespuestasPorModulo(it)!! }
 
-        return 1
+        return total
     }
-*/
+
 }
 
 
@@ -42,7 +43,5 @@ class AnalizadorEstadisticas: Analizador(){
     //fun porcentajeDeRespuestasExitosas() = (this.cantidadDeRespuestasExitosas() * 100)/modulosYRespuestas.size
     //probar
     //fun tiempoDeRespuestaPromedio() = respuestasRealizadas.sumBy { it.tiempo } / respuestasRealizadas.size
-
-    //fun totalDeRespuestas() =
 
 }
