@@ -14,6 +14,8 @@ class Pedido(val ip: String, val url: String, val fechaHora: LocalDateTime) {
   fun protocoloUrl() = url.split(":").first()
   fun rutaUrl() = "/" + url.split("""\.[a-z]*/""".toRegex()).last()
   fun extensionUrl() = url.split(".").last()
+
+  fun fuePedidoPorLaIp(supuestaIp: String) = ip == supuestaIp
 }
 
 class Respuesta(val codigo: CodigoHttp, val body: String, val tiempo: Int, val pedido: Pedido){

@@ -13,6 +13,8 @@ abstract class Analizador {
 
     fun cantidadDeRespuestasPorModulo(modulo: Modulo) = modulosYRespuestas[modulo]?.size
 
+
+
     // probar
     fun cantidadDeRespuestaTotales(): Int{
         var total = 0
@@ -31,17 +33,32 @@ class AnalizadorDemora(val demoraMinima: Int): Analizador(){
     fun cantidadDeRespuestasDemoradasPorModulo(modulo: Modulo) = modulosYRespuestas[modulo]?.count { it.superaElTiempo(demoraMinima) }
 }
 
-class AnalizadorIpSospechosa: Analizador(){
+class AnalizadorIpSospechosa(val coleccionDeIpsSospechosas: List<String>): Analizador(){
 
 }
 
 class AnalizadorEstadisticas: Analizador(){
 
-//probar
-    //fun cantidadDeRespuestasExitosas() = modulosYRespuestas.filterValues { it.esExitosa() }.size
+
+    fun cantidadDeRespuestasExitosasPorModulo(modulo: Modulo) = modulosYRespuestas[modulo]?.count { it.esExitosa()}
+
+    fun tiempoDeRespuestaPromedioPorModulo(modulo: Modulo) = modulosYRespuestas[modulo]?.sumBy { it.tiempo }?.div(modulosYRespuestas[modulo]?.size!!)
     //probar
-    //fun porcentajeDeRespuestasExitosas() = (this.cantidadDeRespuestasExitosas() * 100)/modulosYRespuestas.size
+    fun cantidadDeRespuestasExitosas(): Int{
+        var total = 0
+        total += modulosYRespuestas.keys.sumBy{ this.cantidadDeRespuestasExitosasPorModulo(it)!! }
+        return total
+    }
     //probar
-    //fun tiempoDeRespuestaPromedio() = respuestasRealizadas.sumBy { it.tiempo } / respuestasRealizadas.size
+    fun porcentajeDeRespuestasExitosas() = (this.cantidadDeRespuestasExitosas() * 100)/this.cantidadDeRespuestaTotales()
+
+    //probar y refact
+    fun tiempoDeRespuestaPromedio(): Int {
+        var total = 0
+        //recorro las claves y a cada clave( que son los modulos )
+        total += modulosYRespuestas.keys.sumBy{ this.tiempoDeRespuestaPromedioPorModulo(it)!! }
+        total /= this.cantidadDeRespuestaTotales()
+        return total
+    }
 
 }
