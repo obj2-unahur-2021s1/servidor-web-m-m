@@ -8,16 +8,22 @@ class ModulosTest : DescribeSpec({
 
     var servidor = ServidorWeb()
     val pedidoJPG = Pedido("194.168.2.0","http://pepito.com.ar/documentos/pepito.jpg", LocalDateTime.now())
+    val pedidoPDF = Pedido("194.168.2.0","http://pepito.com.ar/documentos/pepito.pdf", LocalDateTime.now())
     val moduloGrafico = Modulo(Tipo.GRAFICO, 15,"hola")
 
     moduloGrafico.agregarExtension(Extension.jpg)
     servidor.agregarModulo(moduloGrafico)
 
-    describe("Modulo Gráfico") {
+    describe("Servidor con un módulo Gráfico") {
 
-        it("nuevo procesamiento para módulo") {
+        it("procesar jpg") {
             val respuesta = servidor.procesarExtension(pedidoJPG)
             respuesta.codigo.shouldBe(CodigoHttp.OK)
+        }
+
+        it("no puede procesar pdf") {
+            val respuesta = servidor.procesarExtension(pedidoPDF)
+            respuesta.codigo.shouldBe(CodigoHttp.NOT_FOUND)
         }
 
     }
