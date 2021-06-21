@@ -35,6 +35,14 @@ class AnalizadorDemora(val demoraMinima: Int): Analizador(){
 
 class AnalizadorIpSospechosa(val coleccionDeIpsSospechosas: List<String>): Analizador(){
 
+    fun pedidosRealizadorPorLaIpSospechosaEnUnModulo(modulo: Modulo,ipSospechosa: String) =  modulosYRespuestas[modulo]?.count { it.laRespuestaFueGeneradaParaElPedidoConIp(ipSospechosa)}
+
+    fun pedidosTotalesRealizadosPorUnaIpSospechosa(ipSospechosa: String): Int{
+        var total = 0
+        total += modulosYRespuestas.keys.sumBy {this.pedidosRealizadorPorLaIpSospechosaEnUnModulo(it,ipSospechosa) !!}
+        return total
+    }
+
 }
 
 class AnalizadorEstadisticas: Analizador(){

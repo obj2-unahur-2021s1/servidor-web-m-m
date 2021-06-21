@@ -22,6 +22,8 @@ class Respuesta(val codigo: CodigoHttp, val body: String, val tiempo: Int, val p
   fun esExitosa() = codigo == CodigoHttp.OK
 
   fun superaElTiempo(tiempoParametro: Int) = tiempo > tiempoParametro
+
+  fun laRespuestaFueGeneradaParaElPedidoConIp(ip: String) = pedido.fuePedidoPorLaIp(ip)
 }
 
 class ServidorWeb() {
