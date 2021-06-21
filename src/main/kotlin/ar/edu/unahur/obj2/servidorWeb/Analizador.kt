@@ -45,9 +45,20 @@ class AnalizadorIpSospechosa(val coleccionDeIpsSospechosas: List<String>): Anali
         return total
     }
     //probar
-    //fun moduloMasConsultadoPorLasIpSospechosas() =  modulosYRespuestas.keys.max{
+    fun moduloMasConsultadoPorLasIpSospechosas() =  modulosYRespuestas.keys.maxByOrNull { this.funcionQueCuentaLaCantidadDeConsultasQueRealizaronLasIpSospechososEnUnModulo(it) }
 
-    //fun conjuntoDeIpQueSolicitaronUnaRuta(ruta: String)
+    fun funcionQueCuentaLaCantidadDeConsultasQueRealizaronLasIpSospechososEnUnModulo(modulo: Modulo) : Int{
+
+       var total = 0
+       //reever esta parte
+       for (ip in coleccionDeIpsSospechosas){
+           total += this.pedidosRealizadorPorLaIpSospechosaEnUnModulo(modulo,ip)!!
+       }
+       return total
+   }
+
+
+    //fun conjuntoDeIpQueSolicitaronUnaRuta(ruta: String) = coleccionDeIpsSospechosas.filter {}
 }
 
 class AnalizadorEstadisticas: Analizador(){
