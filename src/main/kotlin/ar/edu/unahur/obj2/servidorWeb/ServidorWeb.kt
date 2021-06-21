@@ -50,24 +50,24 @@ class ServidorWeb() {
       return Respuesta(CodigoHttp.NOT_IMPLEMENTED, "Not implemented (501)", tiempoRespuesta, pedido)
   }
 
-  fun procesarExtension(pedido: Pedido) : Respuesta {
-    if (this.modulos.any { it.puedeResponderPedido(pedido) })
+  fun buscarModulo(pedido: Pedido) = modulos.find { it.puedeResponderPedido(pedido) }
+
+  fun puedeProcesarExtension(pedido: Pedido) : Respuesta {
+    if (this.buscarModulo(pedido) != null )
       return Respuesta(CodigoHttp.OK, "Ok (200)", tiempoRespuesta, pedido)
     else
       return Respuesta(CodigoHttp.NOT_FOUND, "Not found (404)", tiempoRespuesta, pedido)
   }
 
+
   fun procesarPedido(pedido: Pedido) : Respuesta? {
+
     val protocoloPedido = pedido.protocoloUrl()
     var respuesta: Respuesta? = null
     var moduloResolvente: Modulo?
     // ACÁ VAN LOS LLAMADOS A LOS MÓDULOS
 
     //refact sta parte
-
-    // primero procesamos protocolo
-    // luego enviamos a los módulos
-
     //pensar un modulo en el caso que se genera un error o no se encuentra
      if (this.validarProtocoloPedido(protocoloPedido) ==  CodigoHttp.OK ) {
        //en el caso de que alguno puede resolver
@@ -89,8 +89,6 @@ class ServidorWeb() {
        moduloResolvente = Modulo(Tipo.NO_RESUELTO,tiempoRespuesta,"")
        respuesta = Respuesta(CodigoHttp.NOT_IMPLEMENTED,"", tiempoRespuesta, pedido)
      }
-
-    // ACÁ VAN LOS LLAMADOS A LOS ANALIZADORES
 
     //se agrega a los analizadores
     analizadores.forEach{

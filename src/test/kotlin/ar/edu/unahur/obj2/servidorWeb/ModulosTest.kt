@@ -17,12 +17,12 @@ class ModulosTest : DescribeSpec({
     describe("Servidor con un módulo Gráfico") {
 
         it("procesar jpg") {
-            val respuesta = servidor.procesarExtension(pedidoJPG)
+            val respuesta = servidor.puedeProcesarExtension(pedidoJPG)
             respuesta.codigo.shouldBe(CodigoHttp.OK)
         }
 
         it("no puede procesar pdf") {
-            val respuesta = servidor.procesarExtension(pedidoPDF)
+            val respuesta = servidor.puedeProcesarExtension(pedidoPDF)
             respuesta.codigo.shouldBe(CodigoHttp.NOT_FOUND)
         }
 
