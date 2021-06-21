@@ -37,12 +37,17 @@ class AnalizadorIpSospechosa(val coleccionDeIpsSospechosas: List<String>): Anali
 
     fun pedidosRealizadorPorLaIpSospechosaEnUnModulo(modulo: Modulo,ipSospechosa: String) =  modulosYRespuestas[modulo]?.count { it.laRespuestaFueGeneradaParaElPedidoConIp(ipSospechosa)}
 
+    //probar
     fun pedidosTotalesRealizadosPorUnaIpSospechosa(ipSospechosa: String): Int{
         var total = 0
+        //recorro las llaves con un for y llamo al this y paso como parametro cada modulo
         total += modulosYRespuestas.keys.sumBy {this.pedidosRealizadorPorLaIpSospechosaEnUnModulo(it,ipSospechosa) !!}
         return total
     }
+    //probar
+    //fun moduloMasConsultadoPorLasIpSospechosas() =  modulosYRespuestas.keys.max{
 
+    //fun conjuntoDeIpQueSolicitaronUnaRuta(ruta: String)
 }
 
 class AnalizadorEstadisticas: Analizador(){
