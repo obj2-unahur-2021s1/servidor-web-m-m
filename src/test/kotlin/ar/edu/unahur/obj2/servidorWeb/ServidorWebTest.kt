@@ -8,13 +8,12 @@ import java.time.LocalDateTime
 
 class ServidorWebTest : DescribeSpec({
 
-  val server = ServidorWeb("pepito.com.ar")
+  val server = ServidorWeb()
 
   val pedido1 = Pedido("194.168.2.0","http://pepito.com.ar/documentos/doc1.html",LocalDateTime.now())
   val pedido2 = Pedido("194.168.2.0","http://pepito.com.ar/documentos/doc2.html",LocalDateTime.now())
   val pedidoConError = Pedido("194.168.2.0","https://pepito.com.ar/documentos/doc1.html",LocalDateTime.now())
   val pedidoConError2 = Pedido("194.168.2.0","https://pepito.com.ar/documentos/doc1.html",LocalDateTime.now())
-
 
   describe("pedido"){
 
@@ -41,6 +40,16 @@ class ServidorWebTest : DescribeSpec({
           val cod = server.procesarPedidoSinModulos(pedidoConError).codigo.codigo
           cod.shouldBe(501)
         }
+        // ESTO ES TEMPORAL
+        it("nuevo procesador") {
+          val respuesta = server.procesarProtocolo(pedido1)
+          respuesta.codigo.shouldBe(CodigoHttp.OK)
+        }
+        it("nuevo procesador con error") {
+          val respuesta = server.procesarProtocolo(pedidoConError)
+          respuesta.codigo.shouldBe(CodigoHttp.NOT_IMPLEMENTED)
+        }
+
 
         it("no devuelve el codigo de errror de esta ok(200) "){
 
@@ -101,7 +110,6 @@ class ServidorWebTest : DescribeSpec({
           respuesta?.tiempo.shouldBe(10)
           respuesta?.pedido.shouldBe(pedidoConError2)
         }
-
       }
       describe("se agrega y elimina modulos"){
         val moduloGrafico = Modulo(Tipo.GRAFICO, 15,"hola")

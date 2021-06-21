@@ -24,7 +24,7 @@ class Respuesta(val codigo: CodigoHttp, val body: String, val tiempo: Int, val p
   fun superaElTiempo(tiempoParametro: Int) = tiempo > tiempoParametro
 }
 
-class ServidorWeb(val dominioServidor: String) {
+class ServidorWeb() {
   val respuestasRealizadas = mutableListOf<Respuesta>()
 
   // tiempo de respuesta preestablecido por el enunciado
@@ -43,6 +43,19 @@ class ServidorWeb(val dominioServidor: String) {
 
   fun quitarAnalizador(analizadorDescartado: Analizador) = analizadores.remove(analizadorDescartado)
 
+  fun procesarProtocolo(pedido: Pedido) : Respuesta {
+    if (this.validarProtocoloPedido(pedido.protocoloUrl()) ==  CodigoHttp.OK )
+      return Respuesta(CodigoHttp.OK, "Ok (200)", tiempoRespuesta, pedido)
+    else
+      return Respuesta(CodigoHttp.NOT_IMPLEMENTED, "Not implemented (501)", tiempoRespuesta, pedido)
+  }
+
+  fun procesarExtension(pedido: Pedido) : Respuesta {
+    if (this.modulos.any { it.puedeResponderElPedido(pedido) })
+      return Respuesta(CodigoHttp.OK, "Ok (200)", tiempoRespuesta, pedido)
+    else
+      return Respuesta(CodigoHttp.NOT_FOUND, "Not found (404)", tiempoRespuesta, pedido)
+  }
 
   fun procesarPedido(pedido: Pedido) : Respuesta? {
     val protocoloPedido = pedido.protocoloUrl()
@@ -51,8 +64,12 @@ class ServidorWeb(val dominioServidor: String) {
     // ACÁ VAN LOS LLAMADOS A LOS MÓDULOS
 
     //refact sta parte
+
+    // primero procesamos protocolo
+    // luego enviamos a los módulos
+
     //pensar un modulo en el caso que se genera un error o no se encuentra
-     if(this.validarProtocoloPedido(protocoloPedido)!=  CodigoHttp.NOT_IMPLEMENTED ){
+     if (this.validarProtocoloPedido(protocoloPedido) ==  CodigoHttp.OK ) {
        //en el caso de que alguno puede resolver
        if(this.primerModuloQuePuedeResolverElPedido(pedido) != null){
          moduloResolvente = this.primerModuloQuePuedeResolverElPedido(pedido)
