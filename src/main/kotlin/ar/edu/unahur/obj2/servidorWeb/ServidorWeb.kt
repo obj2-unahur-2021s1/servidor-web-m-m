@@ -51,7 +51,7 @@ class ServidorWeb() {
   }
 
   fun procesarExtension(pedido: Pedido) : Respuesta {
-    if (this.modulos.any { it.puedeResponderElPedido(pedido) })
+    if (this.modulos.any { it.puedeResponderPedido(pedido) })
       return Respuesta(CodigoHttp.OK, "Ok (200)", tiempoRespuesta, pedido)
     else
       return Respuesta(CodigoHttp.NOT_FOUND, "Not found (404)", tiempoRespuesta, pedido)
@@ -103,7 +103,7 @@ class ServidorWeb() {
     return respuesta
   }
 
-  fun primerModuloQuePuedeResolverElPedido(pedido: Pedido) = modulos.find { it.puedeResponderElPedido(pedido) }
+  fun primerModuloQuePuedeResolverElPedido(pedido: Pedido) = modulos.find { it.puedeResponderPedido(pedido) }
 
   fun validarProtocoloPedido(protocolo: String) = if (protocolo == "http") CodigoHttp.OK else CodigoHttp.NOT_IMPLEMENTED
 

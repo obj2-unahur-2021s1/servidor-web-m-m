@@ -22,12 +22,10 @@ class Modulo(tipo: Tipo, val tiempoRespuesta: Int, val cuerpoRespuesta: String) 
 
     fun agregarExtension(nuevaExtension: Extension) = extensiones.add(nuevaExtension)
 
-    fun validarExtension(extensionPedido: String) : Boolean = extensiones.any { it.toString() == extensionPedido }
-
     // ESTO HAY QUE REFORMULARLO, pensar el caso de que no haya un modulo que resuelve
     fun procesarPedido(pedido: Pedido) : Respuesta {
         return Respuesta(CodigoHttp.OK,cuerpoRespuesta,tiempoRespuesta,pedido)
     }
 
-    fun puedeResponderElPedido(pedido: Pedido) =  extensiones.any{it.toString() == pedido.extensionUrl()}
+    fun puedeResponderPedido(pedido: Pedido) =  extensiones.any { it.toString() == pedido.extensionUrl() }
 }
