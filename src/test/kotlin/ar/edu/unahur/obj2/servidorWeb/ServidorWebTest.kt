@@ -40,16 +40,6 @@ class ServidorWebTest : DescribeSpec({
           val cod = server.procesarPedidoSinModulos(pedidoConError).codigo.codigo
           cod.shouldBe(501)
         }
-        // ESTO ES TEMPORAL
-        it("nuevo procesador") {
-          val respuesta = server.procesarProtocolo(pedido1)
-          respuesta.codigo.shouldBe(CodigoHttp.OK)
-        }
-        it("nuevo procesador con error") {
-          val respuesta = server.procesarProtocolo(pedidoConError)
-          respuesta.codigo.shouldBe(CodigoHttp.NOT_IMPLEMENTED)
-        }
-
 
         it("no devuelve el codigo de errror de esta ok(200) "){
 
@@ -152,25 +142,32 @@ class ServidorWebTest : DescribeSpec({
 
         //estos creo q deberian estar en analizadorTest
         it("hay 2 respuestas para el modulo"){
-
           server.procesarPedido(pedido1)
           server.procesarPedido(pedido1)
           analizador1.cantidadDeRespuestasPorModulo(modulo).shouldBe(2)
-
         }
 
         it("la cantidad de respuestas totales deben ser 3"){
           server.procesarPedido(pedido1)
           server.procesarPedido(pedido1)
           server.procesarPedido(pedidoOdt)
-
           analizador1.cantidadDeRespuestaTotales().shouldBe(3)
-
         }
-
       }
     }
+  }
+  describe("Analizadores") {
+    val pedidoODT = Pedido("194.168.2.0","http://pepito.com.ar/documentos/pepito.odt",LocalDateTime.now())
+    val analizadorDemora = AnalizadorDemora(1)
+    val moduloTexto = Modulo(Tipo.TEXTO, 12, "hola, mundo")
 
+    moduloTexto.agregarExtension(Extension.odt)
+    server.agregarModulo(moduloTexto)
+    server.agregarAnalizador(analizadorDemora)
+    server.procesarPedido(pedidoODT)
+    it("Un pedido demorado") {
+      analizadorDemora.cantidadDeRespuestasDemoradasPorModulo(moduloTexto).shouldBe(1)
+    }
   }
 
 })
