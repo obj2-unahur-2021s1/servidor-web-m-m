@@ -46,7 +46,7 @@ class ServidorWeb() {
   fun quitarAnalizador(analizadorDescartado: Analizador) = analizadores.remove(analizadorDescartado)
 
   fun procesarProtocolo(pedido: Pedido) : Respuesta {
-    if (this.validarProtocoloPedido(pedido.protocoloUrl()) ==  CodigoHttp.OK )
+    if (pedido.protocoloUrl() == "http")
       return Respuesta(CodigoHttp.OK, "Ok (200)", tiempoRespuesta, pedido)
     else
       return Respuesta(CodigoHttp.NOT_IMPLEMENTED, "Not implemented (501)", tiempoRespuesta, pedido)
