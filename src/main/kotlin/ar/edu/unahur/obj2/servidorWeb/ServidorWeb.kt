@@ -52,8 +52,7 @@ class ServidorWeb() {
       return Respuesta(CodigoHttp.NOT_IMPLEMENTED, "Not implemented (501)", tiempoRespuesta, pedido)
   }
 
-  fun buscarModulo(pedido: Pedido) = modulos.find { it.puedeResponderPedido(pedido) }
-
+  // ESTO VUELA... QUEDA buscarModulo y respuestaModulo
   fun puedeProcesarExtension(pedido: Pedido) : Respuesta {
     if (this.buscarModulo(pedido) != null )
       return Respuesta(CodigoHttp.OK, "Ok (200)", tiempoRespuesta, pedido)
@@ -61,6 +60,14 @@ class ServidorWeb() {
       return Respuesta(CodigoHttp.NOT_FOUND, "Not found (404)", tiempoRespuesta, pedido)
   }
 
+  fun buscarModulo(pedido: Pedido) = modulos.find { it.puedeResponderPedido(pedido) }
+
+  fun respuestaModulo(pedido: Pedido, moduloBuscado: Modulo?) : Respuesta {
+    if (moduloBuscado != null)
+      return moduloBuscado.procesarPedido(pedido)
+    else
+      return Respuesta(CodigoHttp.NOT_FOUND, "Not found (404)", tiempoRespuesta, pedido)
+  }
 
   fun procesarPedido(pedido: Pedido) : Respuesta? {
 
