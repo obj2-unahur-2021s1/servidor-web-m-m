@@ -172,8 +172,9 @@ class ServidorWebTest : DescribeSpec({
 
     describe("analizador de ip sospechosas") {
       val ipSospechosas = listOf("104.26.8.142", "142.250.186.131")
-      val pedidoPASS1 = Pedido("104.26.8.142", "http://pepito.com.ar/paswords.txt", LocalDateTime.now())
-      val pedidoPASS2 = Pedido("104.26.8.142", "http://pepito.com.ar/paswords.odt", LocalDateTime.now())
+      val pedidoPASS1 = Pedido("104.26.8.142", "http://pepito.com.ar/passwords.txt", LocalDateTime.now())
+      val pedidoPASS2 = Pedido("104.26.8.142", "http://pepito.com.ar/passwords.odt", LocalDateTime.now())
+      val pedidoPASS3 = Pedido("142.250.186.131", "http://pepito.com.ar/passwords.odt", LocalDateTime.now())
       val analizadorSospechoso = AnalizadorIpSospechosa(ipSospechosas)
 
       server.agregarAnalizador(analizadorSospechoso)
@@ -185,6 +186,12 @@ class ServidorWebTest : DescribeSpec({
       }
       it("módulo más consultado por todas las ip sospechosas") {
         analizadorSospechoso.moduloMasConsultadoPorLasIpSospechosas().shouldBe(moduloTexto)
+      }
+      it("conjunto ip sospechosas que consultaron una ruta") {
+        analizadorSospechoso.conjuntoDeIpQueSolicitaronUnaRuta("/passwords.odt").shouldBe(listOf("104.26.8.142"))
+        // agregamos un nuevo pedido
+        server.procesarPedido(pedidoPASS3)
+        analizadorSospechoso.conjuntoDeIpQueSolicitaronUnaRuta("/passwords.odt").shouldBe(listOf("104.26.8.142", "142.250.186.131"))
       }
     }
   }
