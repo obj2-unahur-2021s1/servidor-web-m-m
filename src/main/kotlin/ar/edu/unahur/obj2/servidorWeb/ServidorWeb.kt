@@ -27,7 +27,7 @@ class Respuesta(val codigo: CodigoHttp, val body: String, val tiempo: Int, val p
 }
 
 class ServidorWeb() {
-  val respuestasRealizadas = mutableListOf<Respuesta>()
+
 
   // tiempo de respuesta preestablecido por el enunciado
   val tiempoRespuesta = 10
@@ -52,7 +52,14 @@ class ServidorWeb() {
       return Respuesta(CodigoHttp.NOT_IMPLEMENTED, "Not implemented (501)", tiempoRespuesta, pedido)
   }
 
-  fun buscarModulo(pedido: Pedido) = modulos.find { it.puedeResponderPedido(pedido) }
+  fun buscarModulo(pedido: Pedido): Modulo {
+    var modu = modulos.find { it.puedeResponderPedido(pedido) }
+    if ( modu != null)
+      return modu
+     else
+      return Modulo(Tipo.NO_ENCONTRADO,10,"")
+  }
+
 
   fun respuestaModulo(pedido: Pedido, moduloBuscado: Modulo?) : Respuesta {
     if (moduloBuscado != null)
@@ -67,12 +74,12 @@ class ServidorWeb() {
       val moduloEncontrado = buscarModulo(pedido)
       val respuestaObtenida = respuestaModulo(pedido, moduloEncontrado)
       // acá hay que hacer compatible los modulos que se pasan porque esto no usa modulo null
-      //analizadores.forEach { it.agregarModuloYRespuesta(moduloEncontrado, respuestaObtenida) }
-      respuestasRealizadas.add(respuestaObtenida)
+      analizadores.forEach { it.agregarModuloYRespuesta(moduloEncontrado, respuestaObtenida) }
+
       return respuestaObtenida
       }
     else {
-      respuestasRealizadas.add(pedidoValidado)
+
       return pedidoValidado
     }
   }
