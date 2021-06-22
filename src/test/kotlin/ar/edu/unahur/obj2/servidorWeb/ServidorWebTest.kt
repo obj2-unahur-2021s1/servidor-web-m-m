@@ -165,8 +165,22 @@ class ServidorWebTest : DescribeSpec({
     server.agregarModulo(moduloTexto)
     server.agregarAnalizador(analizadorDemora)
     server.procesarPedido(pedidoODT)
+
     it("Un pedido demorado") {
-      analizadorDemora.cantidadDeRespuestasDemoradasPorModulo(moduloTexto).shouldBe(1)
+      analizadorDemora.cantidadDeRespuestasDemoradasPorModulo(moduloTexto).shouldBe(1 )
+    }
+
+    it("104.26.8.142 realizó dos consultas sospechosas") {
+      val ipSospechosas = listOf("104.26.8.142", "142.250.186.131")
+      val pedidoPASS1 = Pedido("104.26.8.142", "http://pepito.com.ar/paswords.txt", LocalDateTime.now())
+      val pedidoPASS2 = Pedido("104.26.8.142", "http://pepito.com.ar/paswords.odt", LocalDateTime.now())
+      val analizadorSospechoso = AnalizadorIpSospechosa(ipSospechosas)
+
+      server.agregarAnalizador(analizadorSospechoso)
+      server.procesarPedido(pedidoPASS1)
+      server.procesarPedido(pedidoPASS2)
+
+      analizadorSospechoso.moduloMasConsultadoPorLasIpSospechosas().shouldBe(moduloTexto)
     }
   }
 
