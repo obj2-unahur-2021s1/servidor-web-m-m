@@ -56,9 +56,26 @@ class AnalizadorIpSospechosa(val coleccionDeIpsSospechosas: List<String>): Anali
        }
        return total
    }
+    //probar
+    fun conjuntoDeIpQueSolicitaronUnaRuta(ruta: String): Set<String> {
+        var listaAux = listOf<String>()
+        listaAux = this.respuestasQuetieneLaRutaPedida(ruta).map { it.pedido.ip }
+        return coleccionDeIpsSospechosas.intersect(listaAux)
+    }
 
+    //la idea aca es ir agregando cada lista filter de respuestasConRutaEnUnModulo a la lista auxiliar
+    fun respuestasQuetieneLaRutaPedida(ruta: String): MutableList<Respuesta> {
+        var respuestasTotalesConRuta = mutableListOf<Respuesta>()
+        //respuestasTotalesConRuta.addAll{ modulosYRespuestas.keys.forEach { this.respuestasConRutaEnUnModulo(it,ruta) }}
 
-    //fun conjuntoDeIpQueSolicitaronUnaRuta(ruta: String) = coleccionDeIpsSospechosas.filter {}
+        //para cada elemento de las claves de respuestas(osea los modulos) las traigo y las agrego a respuestasTotalesConRuta
+        for(iter in modulosYRespuestas.keys){
+            this.respuestasConRutaEnUnModulo(iter,ruta)?.let { respuestasTotalesConRuta.addAll(it) }
+        }
+        return respuestasTotalesConRuta
+    }
+
+    fun respuestasConRutaEnUnModulo(modulo: Modulo,ruta: String) = modulosYRespuestas[modulo]?.filter { it.pedido.rutaUrl() == ruta }
 }
 
 class AnalizadorEstadisticas: Analizador(){
