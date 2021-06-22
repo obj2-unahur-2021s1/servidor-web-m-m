@@ -14,6 +14,14 @@ class ModulosTest : DescribeSpec({
     moduloGrafico.agregarExtension(Extension.jpg)
     servidor.agregarModulo(moduloGrafico)
 
+    describe("Servidor sin módulo pdf") {
+        val moduloEncontrado = servidor.buscarModulo(pedidoPDF)
+        moduloEncontrado.shouldBe(null)
+        val respuestaModulo = servidor.respuestaModulo(pedidoPDF, moduloEncontrado)
+        respuestaModulo.codigo.shouldBe(CodigoHttp.NOT_FOUND)
+    }
+
+
     describe("Servidor con un módulo Gráfico") {
 
         it("procesar jpg") {

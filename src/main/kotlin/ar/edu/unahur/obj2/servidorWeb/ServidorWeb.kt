@@ -69,6 +69,23 @@ class ServidorWeb() {
       return Respuesta(CodigoHttp.NOT_FOUND, "Not found (404)", tiempoRespuesta, pedido)
   }
 
+  fun procesarPedidoRefactorizado(pedido: Pedido) : Respuesta {
+    val pedidoValidado = procesarProtocolo(pedido)
+    if (pedidoValidado.codigo == CodigoHttp.OK) {
+      val moduloEncontrado = buscarModulo(pedido)
+      val respuestaObtenida = respuestaModulo(pedido, moduloEncontrado)
+      // acá hay que hacer compatible los modulos que se pasan porque esto no usa modulo null
+      //analizadores.forEach { it.agregarModuloYRespuesta(moduloEncontrado, respuestaObtenida) }
+      respuestasRealizadas.add(respuestaObtenida)
+      return respuestaObtenida
+      }
+    else {
+      respuestasRealizadas.add(pedidoValidado)
+      return pedidoValidado
+    }
+  }
+
+
   fun procesarPedido(pedido: Pedido) : Respuesta? {
 
     val protocoloPedido = pedido.protocoloUrl()
