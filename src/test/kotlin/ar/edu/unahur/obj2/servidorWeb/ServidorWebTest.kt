@@ -185,13 +185,14 @@ class ServidorWebTest : DescribeSpec({
       it("104.26.8.142 realizó dos consultas sospechosas") {
         analizadorSospechoso.pedidosTotalesRealizadosPorUnaIpSospechosa("104.26.8.142").shouldBe(2)
       }
+      // agregamos un pedido más para el módulo texto
+      server.procesarPedido(pedidoPASS3)
+
       it("módulo más consultado por todas las ip sospechosas") {
         analizadorSospechoso.moduloMasConsultadoPorLasIpSospechosas().shouldBe(moduloTexto)
       }
+
       it("conjunto ip sospechosas que consultaron una ruta") {
-        analizadorSospechoso.conjuntoDeIpQueSolicitaronUnaRuta("/passwords.odt").shouldBe(listOf("104.26.8.142"))
-        // agregamos un nuevo pedido
-        server.procesarPedido(pedidoPASS3)
         analizadorSospechoso.conjuntoDeIpQueSolicitaronUnaRuta("/passwords.odt")
           .shouldBe(listOf("104.26.8.142", "142.250.186.131"))
       }
