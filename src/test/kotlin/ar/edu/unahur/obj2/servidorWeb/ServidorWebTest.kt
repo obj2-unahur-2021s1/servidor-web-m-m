@@ -2,6 +2,7 @@ package ar.edu.unahur.obj2.servidorWeb
 
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.booleans.shouldBeFalse
+import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import java.time.LocalDateTime
@@ -157,7 +158,7 @@ class ServidorWebTest : DescribeSpec({
     }
   }
   describe("Analizadores") {
-    val pedidoODT = Pedido("194.168.2.0","http://pepito.com.ar/documentos/pepito.odt",LocalDateTime.now())
+    val pedidoODT = Pedido("194.168.2.0", "http://pepito.com.ar/documentos/pepito.odt", LocalDateTime.now())
     val analizadorDemora = AnalizadorDemora(1)
     val moduloTexto = Modulo(Tipo.TEXTO, 12, "hola, mundo")
 
@@ -167,7 +168,7 @@ class ServidorWebTest : DescribeSpec({
     server.procesarPedido(pedidoODT)
 
     it("Un pedido demorado") {
-      analizadorDemora.cantidadDeRespuestasDemoradasPorModulo(moduloTexto).shouldBe(1 )
+      analizadorDemora.cantidadDeRespuestasDemoradasPorModulo(moduloTexto).shouldBe(1)
     }
 
     describe("analizador de ip sospechosas") {
@@ -191,9 +192,41 @@ class ServidorWebTest : DescribeSpec({
         analizadorSospechoso.conjuntoDeIpQueSolicitaronUnaRuta("/passwords.odt").shouldBe(listOf("104.26.8.142"))
         // agregamos un nuevo pedido
         server.procesarPedido(pedidoPASS3)
-        analizadorSospechoso.conjuntoDeIpQueSolicitaronUnaRuta("/passwords.odt").shouldBe(listOf("104.26.8.142", "142.250.186.131"))
+        analizadorSospechoso.conjuntoDeIpQueSolicitaronUnaRuta("/passwords.odt")
+          .shouldBe(listOf("104.26.8.142", "142.250.186.131"))
       }
     }
-  }
 
+
+    // agregado nuevo
+    describe("segundo analizador de ip sospechosas") {
+      val pedidoODT2 = Pedido("194.168.2.0", "http://pepito.com.ar/documentos/pepito.odt", LocalDateTime.now())
+
+      val listaIps = mutableListOf<String>()
+      listaIps.add("194.168.2.0")
+      listaIps.add("194.168.2.1")
+      listaIps.add("194.168.2.2")
+
+      val analizadorIp = AnalizadorIpSospechosa(listaIps)
+      server.agregarAnalizador(analizadorIp)
+      server.procesarPedido(pedidoODT)
+      server.procesarPedido(pedidoODT2)
+
+      it("la primera ip sospechosa realizo 2 pedidos") {
+        analizadorIp.pedidosTotalesRealizadosPorUnaIpSospechosa(listaIps.first()).shouldBe(2)
+      }
+
+      it("el modulo mas consultado por las ip sospechosas debe ser el modulo de texto") {
+        analizadorIp.moduloMasConsultadoPorLasIpSospechosas().shouldBe(moduloTexto)
+      }
+
+      it("la ip que hizo un pedido sospechoso es la 194.168.2.0") {
+
+        analizadorIp.respuestasConRutaEnUnModulo(moduloTexto, "/documentos/pepito.odt")?.size.shouldBe(2)
+        analizadorIp.conjuntoDeIpQueSolicitaronUnaRuta("/documentos/pepito.odt").size.shouldBe(1)
+        analizadorIp.conjuntoDeIpQueSolicitaronUnaRuta("/documentos/pepito.odt").contains("194.168.2.0").shouldBeTrue()
+      }
+
+    }
+  }
 })
