@@ -28,21 +28,14 @@ class Respuesta(val codigo: CodigoHttp, val body: String, val tiempo: Int, val p
 
 class ServidorWeb() {
 
-
-  // tiempo de respuesta preestablecido por el enunciado
   val tiempoRespuesta = 10
-
   var modulos = mutableListOf<Modulo>()
-
   val analizadores = mutableListOf<Analizador>()
 
-
   fun agregarModulo(nuevoModulo: Modulo) = modulos.add(nuevoModulo)
-
   fun quitarModulo(moduloDescartado: Modulo) = modulos.remove(moduloDescartado)
 
   fun agregarAnalizador(analizador: Analizador) = analizadores.add(analizador)
-
   fun quitarAnalizador(analizadorDescartado: Analizador) = analizadores.remove(analizadorDescartado)
 
   fun procesarProtocolo(pedido: Pedido) : Respuesta {
@@ -60,45 +53,33 @@ class ServidorWeb() {
       return Modulo(Tipo.NO_ENCONTRADO,10,"")
   }
 
-
   fun procesarPedido(pedido: Pedido) : Respuesta? {
-
     val protocoloPedido = pedido.protocoloUrl()
     var respuesta: Respuesta? = null
     var moduloResolvente: Modulo?
-    // ACÁ VAN LOS LLAMADOS A LOS MÓDULOS
 
-    //refact sta parte
-    //pensar un modulo en el caso que se genera un error o no se encuentra
      if (this.validarProtocoloPedido(protocoloPedido) ==  CodigoHttp.OK ) {
-       //en el caso de que alguno puede resolver
        if(this.primerModuloQuePuedeResolverElPedido(pedido) != null){
          moduloResolvente = this.primerModuloQuePuedeResolverElPedido(pedido)
          if (moduloResolvente != null) {
            respuesta = moduloResolvente.procesarPedido(pedido)
          }
        }
-       //generar un tipo para cuando hay un modulo que no resuelve
        else{
          moduloResolvente = Modulo(Tipo.NO_ENCONTRADO,tiempoRespuesta,"")
          respuesta = Respuesta(CodigoHttp.NOT_FOUND,"", tiempoRespuesta, pedido)
        }
-
      }
-     //generar un tipo para cuando hay un modulo que no resuelve
      else{
        moduloResolvente = Modulo(Tipo.NO_RESUELTO,tiempoRespuesta,"")
        respuesta = Respuesta(CodigoHttp.NOT_IMPLEMENTED,"", tiempoRespuesta, pedido)
      }
 
-    //se agrega a los analizadores
     analizadores.forEach{
       if (moduloResolvente != null && respuesta != null ) {
           it.agregarModuloYRespuesta(moduloResolvente,respuesta)
-
       }
     }
-
     return respuesta
   }
 
@@ -111,8 +92,4 @@ class ServidorWeb() {
     val respuesta = Respuesta(this.validarProtocoloPedido(pedido.protocoloUrl()), cuerpoRespuesta, tiempoRespuesta, pedido)
     return respuesta
   }
-
 }
-
-
-
